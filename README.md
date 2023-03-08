@@ -1,9 +1,13 @@
 # VRL3 codebase
 Official code by VRL3 authors. This codebase is currently undergoing clean up and will be updated. 
 
+**Please do not** post this code online for now!!! The public official repo is still being processed. 
+
+I rewrote the entire codebase to make it cleaner and improve readability, so it's possible sth might break, if you run into issues or cannot reproduce the paper results, please don't hesitate to send me an email! (Also, the paper has too many ablations, the code for most of them are now deleted from the codebase so it's not too long and complicated, but if you want to know any details feel free to ask me.)
+
 Repo structure and important files: 
 ```
-VRL3
+VRL3 # this repo
 │   README.md # read this file first!
 └───docker # dockerfile with all dependencies
 └───plot_utils # code for plotting, still working on it now...
@@ -14,10 +18,13 @@ VRL3
     │   stage1_models.py # the encoder classes pretrained in stage 1
     └───cfgs_adroit # configuration files with all hyperparameters
 
-vrl3data # download this folder from the google drive link (450 mb)
+vrl3data # download this folder from the google drive link
 └───demonstrations # adroit demos 
 └───trained_models # pretrained stage 1 models
 ```
+
+## Download adroit demos and pretrained models
+
 
 ## Set up environment
 The recommended way is to just use the dockerfile I provided and follow the tutorial here. You can also look at the dockerfile to know the exact dependencies or modify it to build a new dockerfile. 
@@ -55,6 +62,10 @@ For first-time setup, use `debug=1` to do a quick test run to see if the code is
 python train_adroit.py task=door debug=1
 ```
 
+You can also run with different hyperparameters, see the `config.yaml` for a full list of them. For example: 
+```
+python train_adroit.py task=door stage2_n_update=5000 agent.encoder_lr_scale=0.1
+```
 
 ### Run with singularity 
 If your cluster does not allow sudo (for example, NYU's slurm HPC), then you can use singularity, it is similar to docker.
@@ -92,6 +103,12 @@ or use debug option to do faster test runs.
 ```
 python train_adroit.py task=door debug=1
 ```
+
+## Some hyperparameter details
+- BC loss: in the config files, I now by default disable all BC loss since our ablations show they are not really helping. 
+- under `src/cfgs_adroit/task/relocate.yaml` you will see that relocate has `encoder_lr_scale: 0.01`, as shown in the paper, relocate requires a smaller encoder learning rate. You can set specific default parameters for each task in their separate config files. 
+- in the paper for most experiments, I used `frame_stack=3`, however later I found we can reduce it to 1 and still works with the same performance. It might be beneficial to set it to 1 so it runs faster and takes less memory.
+- all values in table 2 in appendix A.2 of the paper are set to be the default values in the config files. 
 
 ## reproduce plots
 Should allow other people to reproduce all paper figures with 1-click. 

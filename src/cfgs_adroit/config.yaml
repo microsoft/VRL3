@@ -10,6 +10,9 @@ defaults:
 
 # task settings
 debug: 0
+# frame_stack: in paper actually used 3 as default for adroit, however
+# it can take a lot more memory especially for relocate, and later ablation shows
+# frame_stack does not affect performance significantly in Adroit, so here we set it to 1.
 frame_stack: 1
 action_repeat: 2
 discount: 0.99
@@ -52,7 +55,7 @@ num_demo: 25
 stage2_n_update: 30000
 
 # ====== stage 3 ======
-num_seed_frames: 4000
+num_seed_frames: 0
 
 agent:
   _target_: vrl3_agent.VRL3Agent
@@ -77,8 +80,8 @@ agent:
   encoder_lr_scale: 1
   stddev_clip: 0.3
   # safe Q
-  safe_q_target_factor: 1 # value 1 is not using safe factor, value 0 is hard cutoff.
-  safe_q_threshold: 125
+  safe_q_target_factor: 0.5 # value 1 is not using safe factor, value 0 is hard cutoff.
+  safe_q_threshold: 200
   # pretanh penalty
   pretanh_threshold: 5
   pretanh_penalty: 0.001
@@ -93,7 +96,7 @@ agent:
 
   # ====== stage 3 ======
   stage3_update_encoder: true
-  num_expl_steps: 2000 # number of random actions at start of stage 3
+  num_expl_steps: 0 # number of random actions at start of stage 3
   # std decay
   std0: 0.01
   std1: 0.01
