@@ -107,7 +107,7 @@ python train_adroit.py task=door debug=1
 ## Some hyperparameter details
 - BC loss: in the config files, I now by default disable all BC loss since our ablations show they are not really helping. 
 - under `src/cfgs_adroit/task/relocate.yaml` you will see that relocate has `encoder_lr_scale: 0.01`, as shown in the paper, relocate requires a smaller encoder learning rate. You can set specific default parameters for each task in their separate config files. 
-- in the paper for most experiments, I used `frame_stack=3`, however later I found we can reduce it to 1 and still works with the same performance. It might be beneficial to set it to 1 so it runs faster and takes less memory.
+- in the paper for most experiments, I used `frame_stack=3`, however later I found we can reduce it to 1 and still works with the same performance. It might be beneficial to set it to 1 so it runs faster and takes less memory. If you set this to 1, then convolutional channel expansion will only be applied for for the relocate env, where the input is a stack of 3 camera images. 
 - all values in table 2 in appendix A.2 of the paper are set to be the default values in the config files. 
 
 ## reproduce plots
