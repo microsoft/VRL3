@@ -111,8 +111,9 @@ python train_adroit.py task=door debug=1
 - all values in table 2 in appendix A.2 of the paper are set to be the default values in the config files. 
 
 ## reproduce plots
-Should allow other people to reproduce all paper figures with 1-click. 
-Still working on it now...
+Essentially all experiment logs are in the logs folder form the drive link. And then I basically run `plot_utils/vrl3_plot_runner.py` to generate all the figures. (it uses plotting helper functions in `vrl3_plot_helper.py`) But there were too many figures, and I still need some time to clean up the plotting code so it might be difficult to use for now. Sorry for that.
+
+Still working on it now... Should allow other people to easily reproduce all paper figures with 1-click.
 
 ### below: STILL WORKING ON IT NOW...
 # Project
