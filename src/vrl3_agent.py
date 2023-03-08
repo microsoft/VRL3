@@ -327,6 +327,10 @@ class VRL3Agent:
             self.stage3_update_encoder = True
         else:
             self.stage3_update_encoder = False
+
+        print(encoder_lr_scale)
+        quit()
+
         self.encoder = RLEncoder(obs_shape, stage1_model_name, device).to(device)
 
         self.act_dim = action_shape[0]

@@ -59,6 +59,7 @@ def make_agent(obs_spec, action_spec, cfg):
 class Workspace:
     def __init__(self, cfg):
         self.work_dir = Path.cwd()
+        print("====== Training log stored to: ======")
         print(f'workspace: {self.work_dir}')
         self.direct_folder_name = os.path.basename(self.work_dir)
 

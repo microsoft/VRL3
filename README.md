@@ -89,6 +89,9 @@ cd /code
 python train_adroit.py task=door
 ```
 or use debug option to do faster test runs. 
+```
+python train_adroit.py task=door debug=1
+```
 
 ## reproduce plots
 Should allow other people to reproduce all paper figures with 1-click. 
