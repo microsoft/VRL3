@@ -374,7 +374,8 @@ class Workspace:
             for i_stage2 in range(stage2_n_update):
                 metrics = self.agent.update(self.replay_iter, i_stage2, stage=2, use_sensor=IS_ADROIT)
                 if i_stage2 % self.cfg.stage2_eval_every_frames == 0:
-                    average_score, succ_rate = self.eval_adroit(do_log=False)
+                    average_score, succ_rate = self.eval_adroit(force_number_episodes=self.cfg.stage2_num_eval_episodes,
+                                                                do_log=False)
                     print('Stage 2 step %d, Q(s,a): %.2f, Q loss: %.2f, score: %.2f, succ rate: %.2f' %
                           (i_stage2, metrics['critic_q1'],  metrics['critic_loss'], average_score, succ_rate))
                 if self.cfg.show_computation_time_est and i_stage2 > 0 and i_stage2 % self.cfg.show_time_est_interval == 0:

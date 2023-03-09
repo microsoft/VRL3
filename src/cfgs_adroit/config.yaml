@@ -20,6 +20,7 @@ discount: 0.99
 eval_every_frames: 50000
 num_eval_episodes: 25
 stage2_eval_every_frames: 5000
+stage2_num_eval_episodes: 5
 # snapshot
 save_snapshot: false
 # replay buffer
