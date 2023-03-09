@@ -108,11 +108,11 @@ After the singularity container started running, now refer to the "Run experimen
 ## Some hyperparameter details
 - BC loss: in the config files, I now by default disable all BC loss since our ablations show they are not really helping. 
 - under `src/cfgs_adroit/task/relocate.yaml` you will see that relocate has `encoder_lr_scale: 0.01`, as shown in the paper, relocate requires a smaller encoder learning rate. You can set specific default parameters for each task in their separate config files. 
-- in the paper for most experiments, I used `frame_stack=3`, however later I found we can reduce it to 1 and still works with the same performance. It might be beneficial to set it to 1 so it runs faster and takes less memory. If you set this to 1, then convolutional channel expansion will only be applied for for the relocate env, where the input is a stack of 3 camera images. 
+- in the paper for most experiments, I used `frame_stack=3`, however later I found we can reduce it to 1 and still get the same performance. It might be beneficial to set it to 1 so it runs faster and takes less memory. If you set this to 1, then convolutional channel expansion will only be applied for the relocate env, where the input is a stack of 3 camera images. 
 - all values in table 2 in appendix A.2 of the paper are set to be the default values in the config files. 
 
 ## Computation time
-This table compares the computation time estimates for the open source code with default hyperparameters (tested on NYU Greene with RTX 8000 and 4 cpus). When you use the code on your machine, it might be slightly faster or slower, but should not be too different. These results seem to be slightly faster than what we reported in the paper (which used an older version of the code, and tested on Azure P100 GPU machines).
+This table compares the computation time estimates for the open source code with default hyperparameters (tested on NYU Greene with RTX 8000 and 4 cpus). When you use the code on your machine, it might be slightly faster or slower, but should not be too different. These results seem to be slightly faster than what we reported in the paper (which tested on Azure P100 GPU machines). Improved computation speed is mainly due to we now set default `frame_stack` for Adroit.
 
 | Task  | Stage 2 (30K updates) | Stage 3 (4M frames) | Total   | Total (paper) | 
 |------------------|-----------------------|---------------------|---------|------------|
