@@ -380,9 +380,11 @@ class Workspace:
                           (i_stage2, metrics['critic_q1'],  metrics['critic_loss'], average_score, succ_rate))
                 if self.cfg.show_computation_time_est and i_stage2 > 0 and i_stage2 % self.cfg.show_time_est_interval == 0:
                     print_stage2_time_est(time.time()-stage2_start_time, i_stage2+1, stage2_n_update)
+        print("Stage 2 finished in %.2f hours." % ((time.time()-stage2_start_time) / 3600))
 
         """========================================== STAGE 3 =========================================="""
         print("\n=== Stage 3 started ===")
+        stage3_start_time = time.time()
         # predicates
         train_until_step = utils.Until(self.cfg.num_train_frames, self.cfg.action_repeat)
         seed_until_step = utils.Until(self.cfg.num_seed_frames, self.cfg.action_repeat)
@@ -396,7 +398,6 @@ class Workspace:
 
         episode_step_since_log, episode_reward_list, episode_frame_list = 0, [0], [0]
         self.timer.reset()
-        stage3_start_time = time.time()
         while train_until_step(self.global_step):
             # if 1000 steps passed, do some logging
             if self.global_step % 1000 == 0 and metrics is not None:
@@ -479,6 +480,7 @@ class Workspace:
             self.copy_to_azure()
         except Exception as e:
             print(e)
+        print("Stage 3 finished in %.2f hours." % ((time.time()-stage3_start_time) / 3600))
         print("All stages finished in %.2f hrs. Work dir:" % ((time.time()-train_start_time)/3600))
         print(self.work_dir)
 
