@@ -58,19 +58,19 @@ def make_agent(obs_spec, action_spec, cfg):
 
 def print_stage2_time_est(time_used, curr_n_update, total_n_update):
     time_per_update = time_used / curr_n_update
-    time_per_1k_update = time_per_update * 1000
     est_total_time = time_per_update * total_n_update
     est_time_remaining = est_total_time - time_used
-    print("Stage 2 time used: %.2f hrs; total est: %.2f hrs; remaining: %.2f hrs. Overall FPS: %d." %
-          (time_used/3600, est_total_time/3600, est_time_remaining/3600, int(curr_n_update/time_used)))
+    print("Stage 2 [{}%]. Time used: {:.2f} hrs; total est: {:.2f} hrs; remaining: {:.2f} hrs. Overall FPS: {}.".format(
+        curr_n_update / total_n_update * 100, time_used / 3600, est_total_time / 3600,
+        est_time_remaining / 3600, int(curr_n_update / time_used)))
 
 def print_stage3_time_est(time_used, curr_n_frames, total_n_frames):
     time_per_update = time_used / curr_n_frames
-    time_per_1k_update = time_per_update * 1000
     est_total_time = time_per_update * total_n_frames
     est_time_remaining = est_total_time - time_used
-    print("Stage 3 time used: %.2f hrs; total est: %.2f hrs; remaining: %.2f hrs. Overall FPS: %d." %
-          (time_used/3600, est_total_time/3600, est_time_remaining/3600, int(curr_n_frames/time_used)))
+    print("Stage 3 [{}%]. Time used: {:.2f} hrs; total est: {:.2f} hrs; remaining: {:.2f} hrs. Overall FPS: {}.".format(
+        curr_n_frames / total_n_frames * 100, time_used / 3600, est_total_time / 3600,
+        est_time_remaining / 3600, int(curr_n_frames / time_used)))
 
 class Workspace:
     def __init__(self, cfg):
@@ -377,7 +377,7 @@ class Workspace:
                     average_score, succ_rate = self.eval_adroit(do_log=False)
                     print('Stage 2 step %d, Q(s,a): %.2f, Q loss: %.2f, score: %.2f, succ rate: %.2f' %
                           (i_stage2, metrics['critic_q1'],  metrics['critic_loss'], average_score, succ_rate))
-                if self.cfg.show_computation_time_est and i_stage2 >= 1000 and i_stage2 % 1000 == 0:
+                if self.cfg.show_computation_time_est and i_stage2 >= 2500 and i_stage2 % 2500 == 0:
                     print_stage2_time_est(time.time()-stage2_start_time, i_stage2+1, stage2_n_update)
 
         """========================================== STAGE 3 =========================================="""
@@ -410,7 +410,7 @@ class Workspace:
                         log('buffer_size', len(self.replay_storage))
                         log('step', self.global_step)
                 episode_step_since_log, episode_reward_list, episode_frame_list = 0, [0], [0]
-                if self.cfg.show_computation_time_est and self.global_frame >= 1000:
+                if self.cfg.show_computation_time_est and self.global_frame >= 5000 and self.global_frame % 5000 == 0:
                     print_stage3_time_est(time.time() - stage3_start_time, self.global_frame + 1, self.cfg.num_train_frames)
 
             # if reached end of episode
@@ -478,7 +478,7 @@ class Workspace:
             self.copy_to_azure()
         except Exception as e:
             print(e)
-        print("All stages finished in %d hrs. Work dir:" % int((time.time()-train_start_time)/3600))
+        print("All stages finished in %.2f hrs. Work dir:" % ((time.time()-train_start_time)/3600))
         print(self.work_dir)
 
     def save_snapshot(self, suffix=None):
