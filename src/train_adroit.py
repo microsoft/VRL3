@@ -60,7 +60,7 @@ def print_stage2_time_est(time_used, curr_n_update, total_n_update):
     time_per_update = time_used / curr_n_update
     est_total_time = time_per_update * total_n_update
     est_time_remaining = est_total_time - time_used
-    print("Stage 2 [{:.2f}%]. Frames:[{:.0f}/{:.0f}K] Time:[{:.2f}/{:.2f}]hrs. Overall FPS: {}.".format(
+    print("Stage 2 [{:.2f}%]. Frames:[{:.0f}/{:.0f}]K. Time:[{:.2f}/{:.2f}]hrs. Overall FPS: {}.".format(
         curr_n_update / total_n_update * 100, curr_n_update/1000, total_n_update/1000,
         time_used / 3600, est_total_time / 3600, int(curr_n_update / time_used)))
 
@@ -68,7 +68,7 @@ def print_stage3_time_est(time_used, curr_n_frames, total_n_frames):
     time_per_update = time_used / curr_n_frames
     est_total_time = time_per_update * total_n_frames
     est_time_remaining = est_total_time - time_used
-    print("Stage 2 [{:.2f}%]. Frames:[{:.0f}/{:.0f}K] Time:[{:.2f}/{:.2f}]hrs. Overall FPS: {}.".format(
+    print("Stage 2 [{:.2f}%]. Frames:[{:.0f}/{:.0f}]K. Time:[{:.2f}/{:.2f}]hrs. Overall FPS: {}.".format(
         curr_n_frames / total_n_frames * 100, curr_n_frames/1000, total_n_frames/1000,
         time_used / 3600, est_total_time / 3600, int(curr_n_frames / time_used)))
 
