@@ -1,4 +1,5 @@
 # cudagl with miniconda and python 3.8, pytorch, mujoco and gym v2 envs, REDQ
+# current corresponding image on dockerhub: docker://cwatcherw/vrl3:1.5
 
 FROM nvidia/cudagl:11.0-base-ubuntu18.04
 WORKDIR /workspace
@@ -97,6 +98,13 @@ RUN cd /workspace/ \
     && pip install -e mj_envs/. \
     && pip install -e mjrl/.
 
+# important to have this so mujoco can compile stuff related to gpu rendering
+RUN apt-get update && apt-get install -y libglew-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# if we don't have this path `/usr/lib/nvidia`, the old mujoco can render with cpu only and not even give an error message
+# makes everything very slow and drive people insane
+RUN mkdir /usr/lib/nvidia
 #RUN cd /workspace/ \
 #    && git clone --recursive https://github.com/facebookresearch/RRL.git \
 #    && cd RRL
