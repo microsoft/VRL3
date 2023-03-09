@@ -478,7 +478,7 @@ class Workspace:
             self.copy_to_azure()
         except Exception as e:
             print(e)
-        print("Training finished in %d hrs. Work dir:" % int(time.time()-train_start_time))
+        print("All stages finished in %d hrs. Work dir:" % int((time.time()-train_start_time)/3600))
         print(self.work_dir)
 
     def save_snapshot(self, suffix=None):
