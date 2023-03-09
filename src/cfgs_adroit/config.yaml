@@ -36,6 +36,7 @@ use_tb: false
 save_models: false
 local_data_dir: '/vrl3data'
 show_computation_time_est: true # provide estimates on computation times
+show_time_est_interval: 2500
 # experiment
 experiment: exp
 # environment

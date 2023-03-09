@@ -377,7 +377,7 @@ class Workspace:
                     average_score, succ_rate = self.eval_adroit(do_log=False)
                     print('Stage 2 step %d, Q(s,a): %.2f, Q loss: %.2f, score: %.2f, succ rate: %.2f' %
                           (i_stage2, metrics['critic_q1'],  metrics['critic_loss'], average_score, succ_rate))
-                if self.cfg.show_computation_time_est and i_stage2 >= 2500 and i_stage2 % 2500 == 0:
+                if self.cfg.show_computation_time_est and i_stage2 > 0 and i_stage2 % self.cfg.show_time_est_interval == 0:
                     print_stage2_time_est(time.time()-stage2_start_time, i_stage2+1, stage2_n_update)
 
         """========================================== STAGE 3 =========================================="""
@@ -410,8 +410,8 @@ class Workspace:
                         log('buffer_size', len(self.replay_storage))
                         log('step', self.global_step)
                 episode_step_since_log, episode_reward_list, episode_frame_list = 0, [0], [0]
-                if self.cfg.show_computation_time_est and self.global_frame >= 5000 and self.global_frame % 5000 == 0:
-                    print_stage3_time_est(time.time() - stage3_start_time, self.global_frame + 1, self.cfg.num_train_frames)
+            if self.cfg.show_computation_time_est and self.global_step > 0 and self.global_step % self.cfg.show_time_est_interval == 0:
+                print_stage3_time_est(time.time() - stage3_start_time, self.global_frame + 1, self.cfg.num_train_frames)
 
             # if reached end of episode
             if time_step.last():
