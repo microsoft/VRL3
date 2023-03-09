@@ -365,6 +365,7 @@ class Workspace:
         """========================================= LOAD DATA ========================================="""
         if self.cfg.load_demo:
             self.load_demo(self.replay_storage, self.cfg.task_name)
+        print("Model and data loading finished in %.2f hours." % ((time.time()-train_start_time) / 3600))
 
         """========================================== STAGE 2 =========================================="""
         print("\n=== Stage 2 started ===")
