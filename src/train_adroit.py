@@ -75,7 +75,7 @@ def print_stage3_time_est(time_used, curr_n_frames, total_n_frames):
 class Workspace:
     def __init__(self, cfg):
         self.work_dir = Path.cwd()
-        print("====== Training log stored to: ======")
+        print("\n=== Training log stored to: ===")
         print(f'workspace: {self.work_dir}')
         self.direct_folder_name = os.path.basename(self.work_dir)
 
