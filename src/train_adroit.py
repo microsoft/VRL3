@@ -355,6 +355,7 @@ class Workspace:
         return model_path
 
     def train(self):
+        train_start_time = time.time()
         print("\n=== Training started! ===")
         """=================================== LOAD PRETRAINED MODEL ==================================="""
         if self.cfg.stage1_use_pretrain:
@@ -477,6 +478,8 @@ class Workspace:
             self.copy_to_azure()
         except Exception as e:
             print(e)
+        print("Training finished in %d hrs. Work dir:" % int(time.time()-train_start_time))
+        print(self.work_dir)
 
     def save_snapshot(self, suffix=None):
         if suffix is None:
@@ -504,13 +507,11 @@ class Workspace:
             amlt_path_to = os.path.join(amlt_path, self.direct_folder_name)
             copy_tree(str(container_log_path), amlt_path_to, update=1)
             # copytree(str(container_log_path), amlt_path_to, dirs_exist_ok=True, ignore=ignore_patterns('*.npy'))
-        else: # if at local
-            container_log_path = self.work_dir
-            # TODO should let user specific path to save to
-            amlt_path_to = '/vrl3data/logs'
-            copy_tree(str(container_log_path), amlt_path_to, update=1)
-            # copytree(str(container_log_path), amlt_path_to, dirs_exist_ok=True, ignore=ignore_patterns('*.npy'))
-        print("Data copied to:", amlt_path_to)
+            print("Data copied to:", amlt_path_to)
+        # else: # if at local
+        #     container_log_path = self.work_dir
+        #     amlt_path_to = '/vrl3data/logs'
+        #     copy_tree(str(container_log_path), amlt_path_to, update=1)
 
 @hydra.main(config_path='cfgs_adroit', config_name='config')
 def main(cfg):
