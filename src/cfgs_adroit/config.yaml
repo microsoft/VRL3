@@ -35,6 +35,7 @@ save_train_video: false
 use_tb: false
 save_models: false
 local_data_dir: '/vrl3data'
+show_computation_time_est: true # provide estimates on computation times
 # experiment
 experiment: exp
 # environment

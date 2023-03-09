@@ -61,8 +61,16 @@ def print_stage2_time_est(time_used, curr_n_update, total_n_update):
     time_per_1k_update = time_per_update * 1000
     est_total_time = time_per_update * total_n_update
     est_time_remaining = est_total_time - time_used
-    print("Stage 2 time used: %.2f hours; total est: %.2f hours; remaining: %.2f hours. Time for 1K updates: %.1f min (%.2f hours)" %
-          (time_used/3600, est_total_time/3600, est_time_remaining/3600, time_per_1k_update/60, time_per_1k_update/3600))
+    print("Stage 2 time used: %.2f hrs; total est: %.2f hrs; remaining: %.2f hrs. Overall FPS: %d." %
+          (time_used/3600, est_total_time/3600, est_time_remaining/3600, int(curr_n_update/time_used)))
+
+def print_stage3_time_est(time_used, curr_n_frames, total_n_frames):
+    time_per_update = time_used / curr_n_frames
+    time_per_1k_update = time_per_update * 1000
+    est_total_time = time_per_update * total_n_frames
+    est_time_remaining = est_total_time - time_used
+    print("Stage 3 time used: %.2f hrs; total est: %.2f hrs; remaining: %.2f hrs. Overall FPS: %d." %
+          (time_used/3600, est_total_time/3600, est_time_remaining/3600, int(curr_n_frames/time_used)))
 
 class Workspace:
     def __init__(self, cfg):
@@ -362,14 +370,14 @@ class Workspace:
         stage2_start_time = time.time()
         stage2_n_update = self.cfg.stage2_n_update
         if stage2_n_update > 0:
-            for i_cql in range(stage2_n_update):
-                metrics = self.agent.update(self.replay_iter, i_cql, stage=2, use_sensor=IS_ADROIT)
-                if i_cql % self.cfg.stage2_eval_every_frames == 0:
+            for i_stage2 in range(stage2_n_update):
+                metrics = self.agent.update(self.replay_iter, i_stage2, stage=2, use_sensor=IS_ADROIT)
+                if i_stage2 % self.cfg.stage2_eval_every_frames == 0:
                     average_score, succ_rate = self.eval_adroit(do_log=False)
                     print('Stage 2 step %d, Q(s,a): %.2f, Q loss: %.2f, score: %.2f, succ rate: %.2f' %
-                          (i_cql, metrics['critic_q1'],  metrics['critic_loss'], average_score, succ_rate))
-                if i_cql % 1000 == 0:
-                    print_stage2_time_est(time.time()-stage2_start_time, i_cql+1, stage2_n_update)
+                          (i_stage2, metrics['critic_q1'],  metrics['critic_loss'], average_score, succ_rate))
+                if self.cfg.show_computation_time_est and i_stage2 >= 1000 and i_stage2 % 1000 == 0:
+                    print_stage2_time_est(time.time()-stage2_start_time, i_stage2+1, stage2_n_update)
 
         """========================================== STAGE 3 =========================================="""
         print("\n=== Stage 3 started ===")
@@ -386,6 +394,7 @@ class Workspace:
 
         episode_step_since_log, episode_reward_list, episode_frame_list = 0, [0], [0]
         self.timer.reset()
+        stage3_start_time = time.time()
         while train_until_step(self.global_step):
             # if 1000 steps passed, do some logging
             if self.global_step % 1000 == 0 and metrics is not None:
@@ -400,6 +409,8 @@ class Workspace:
                         log('buffer_size', len(self.replay_storage))
                         log('step', self.global_step)
                 episode_step_since_log, episode_reward_list, episode_frame_list = 0, [0], [0]
+                if self.cfg.show_computation_time_est and self.global_frame >= 1000:
+                    print_stage3_time_est(time.time() - stage3_start_time, self.global_frame + 1, self.cfg.num_train_frames)
 
             # if reached end of episode
             if time_step.last():
