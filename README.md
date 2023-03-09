@@ -111,6 +111,16 @@ Now refer to the "Run experiments" section.
 - in the paper for most experiments, I used `frame_stack=3`, however later I found we can reduce it to 1 and still works with the same performance. It might be beneficial to set it to 1 so it runs faster and takes less memory. If you set this to 1, then convolutional channel expansion will only be applied for for the relocate env, where the input is a stack of 3 camera images. 
 - all values in table 2 in appendix A.2 of the paper are set to be the default values in the config files. 
 
+## Computation time
+This table compares the computation time estimates for the open source code with default hyperparameters (tested on NYU Greene with RTX 8000 and 4 cpus). When you use the code on your machine, it might be slightly faster or slower, but should not be too different. These results seem to be slightly faster than what we reported in the paper (which used an older version of the code, and tested on Azure P100 GPU machines) 
+
+| Task  | Stage 2 (30K updates) | Stage 3 (4M frames) | Total     | Total (paper) | 
+|------------------|-----------------------|---------------------|-----------|------------|
+| Door/Pen/Hammer  | ~0.5 hrs              | ~13 hrs             | ~13.5 hrs  | ~16 hrs         |
+| Relocate         | ~0.5 hrs              | ~16 hrs             | ~16.5 hrs |   ~24 hrs       |
+
+Note that VRL3's performance kind of converged already at 1M data for Door, Hammer and Relocate. So depending on what you want to achieve in your work, you may or may not need to run a full 4M frames. In the paper we run to 4M to be consistent with prior work and show VRL3 can outperform previous SOTA in both short-term and long-term performance. 
+
 ## reproduce plots
 Essentially all experiment logs are in the logs folder form the drive link. And then I basically run `plot_utils/vrl3_plot_runner.py` to generate all the figures. (it uses plotting helper functions in `vrl3_plot_helper.py`) But there were too many figures, and I still need some time to clean up the plotting code so it might be difficult to use for now. Sorry for that.
 
