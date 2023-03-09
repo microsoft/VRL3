@@ -56,6 +56,14 @@ def make_agent(obs_spec, action_spec, cfg):
     cfg.action_shape = action_spec.shape
     return hydra.utils.instantiate(cfg)
 
+def print_stage2_time_est(time_used, curr_n_update, total_n_update):
+    time_per_update = time_used / curr_n_update
+    time_per_1k_update = time_per_update * 1000
+    est_total_time = time_per_update * total_n_update
+    est_time_remaining = est_total_time - time_used
+    print("Stage 2 time used: %.2f hours; total est: %.2f hours; remaining: %.2f hours. Time for 1K updates: %.1f min (%.2f hours)" %
+          (time_used/3600, est_total_time/3600, est_time_remaining/3600, time_per_1k_update/60, time_per_1k_update/3600))
+
 class Workspace:
     def __init__(self, cfg):
         self.work_dir = Path.cwd()
@@ -351,6 +359,7 @@ class Workspace:
 
         """========================================== STAGE 2 =========================================="""
         print("\n=== Stage 2 started ===")
+        stage2_start_time = time.time()
         stage2_n_update = self.cfg.stage2_n_update
         if stage2_n_update > 0:
             for i_cql in range(stage2_n_update):
@@ -359,6 +368,8 @@ class Workspace:
                     average_score, succ_rate = self.eval_adroit(do_log=False)
                     print('Stage 2 step %d, Q(s,a): %.2f, Q loss: %.2f, score: %.2f, succ rate: %.2f' %
                           (i_cql, metrics['critic_q1'],  metrics['critic_loss'], average_score, succ_rate))
+                if i_cql % 1000 == 0:
+                    print_stage2_time_est(time.time()-stage2_start_time, i_cql+1, stage2_n_update)
 
         """========================================== STAGE 3 =========================================="""
         print("\n=== Stage 3 started ===")
