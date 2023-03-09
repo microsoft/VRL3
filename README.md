@@ -30,7 +30,7 @@ vrl3data # download this folder from the google drive link
 The recommended way is to just use the dockerfile I provided and follow the tutorial here. You can also look at the dockerfile to know the exact dependencies or modify it to build a new dockerfile. 
 
 ### Setup with docker
-If you have a local machine with gpu, or your cluster allows docker (you have sudo), then you can just pull my docker image and run code there.
+If you have a local machine with gpu, or your cluster allows docker (you have sudo), then you can just pull my docker image and run code there. (Newest version is 1.5, where the mujoco slow rendering with gpu issue is fixed). 
 ```
 docker pull docker://cwatcherw/vrl3:1.5
 ```
@@ -43,7 +43,7 @@ docker run -it --rm --gpus all -v "$(pwd)"/VRL3/src:/code -v "$(pwd)"/vrl3data:/
 Now you should be inside the docker container. Refer to the "Run experiments" section now. 
 
 ### Run experiments
-Once you get into the container, first run following commands so the paths are correct. 
+Once you get into the container (either docker or singularity), first run the following commands so the paths are correct. Very important especially on singularity since it uses automount which can mess up the paths.  
 ```
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/workspace/.mujoco/mujoco210/bin
 export MUJOCO_PY_MUJOCO_PATH=/workspace/.mujoco/mujoco210/
@@ -96,14 +96,14 @@ For example, on NYU HPC, start interactive session (if your school has a differe
 ```
 srun --pty --gres=gpu:1 --cpus-per-task=4 --mem 12000 -t 0-06:00 bash
 ```
-Once the job is allocated to you, go the `sing` folder where you have your container, then run it:
+Here, by default VRL3 uses 4 workers for dataloader, so we request 4 cpus. Once the job is allocated to you, go the `sing` folder where you have your container, then run it:
 ```
 cd /scratch/$USER/sing
 singularity exec --nv -B /scratch/$USER/sing/VRL3/src:/code -B /scratch/$USER/sing/vrl3sing/opt/conda/lib/python3.8/site-packages/mujoco_py/:/opt/conda/lib/python3.8/site-packages/mujoco_py/ -B /scratch/$USER/sing/vrl3data:/vrl3data /scratch/$USER/sing/vrl3sing bash
 ```
-Here, by default VRL3 uses 4 workers for dataloader, so we request 4 cpus. We also mount the `mujoco_py` package folder because singularity files by default are read-only, and the older version of mujoco_py wants to modify files, which can be problematic. (And Adroit env relies on older version of mujoco so we have to deal with it...)
+We mount the `mujoco_py` package folder because singularity files by default are read-only, and the older version of mujoco_py wants to modify files, which can be problematic. (And Adroit env relies on older version of mujoco so we have to deal with it...)
 
-Now refer to the "Run experiments" section.
+After the singularity container started running, now refer to the "Run experiments" section.
 
 ## Some hyperparameter details
 - BC loss: in the config files, I now by default disable all BC loss since our ablations show they are not really helping. 
@@ -112,7 +112,7 @@ Now refer to the "Run experiments" section.
 - all values in table 2 in appendix A.2 of the paper are set to be the default values in the config files. 
 
 ## Computation time
-This table compares the computation time estimates for the open source code with default hyperparameters (tested on NYU Greene with RTX 8000 and 4 cpus). When you use the code on your machine, it might be slightly faster or slower, but should not be too different. These results seem to be slightly faster than what we reported in the paper (which used an older version of the code, and tested on Azure P100 GPU machines) 
+This table compares the computation time estimates for the open source code with default hyperparameters (tested on NYU Greene with RTX 8000 and 4 cpus). When you use the code on your machine, it might be slightly faster or slower, but should not be too different. These results seem to be slightly faster than what we reported in the paper (which used an older version of the code, and tested on Azure P100 GPU machines).
 
 | Task  | Stage 2 (30K updates) | Stage 3 (4M frames) | Total   | Total (paper) | 
 |------------------|-----------------------|---------------------|---------|------------|
