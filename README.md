@@ -114,10 +114,10 @@ Now refer to the "Run experiments" section.
 ## Computation time
 This table compares the computation time estimates for the open source code with default hyperparameters (tested on NYU Greene with RTX 8000 and 4 cpus). When you use the code on your machine, it might be slightly faster or slower, but should not be too different. These results seem to be slightly faster than what we reported in the paper (which used an older version of the code, and tested on Azure P100 GPU machines) 
 
-| Task  | Stage 2 (30K updates) | Stage 3 (4M frames) | Total     | Total (paper) | 
-|------------------|-----------------------|---------------------|-----------|------------|
-| Door/Pen/Hammer  | ~0.5 hrs              | ~13 hrs             | ~13.5 hrs  | ~16 hrs         |
-| Relocate         | ~0.5 hrs              | ~16 hrs             | ~16.5 hrs |   ~24 hrs       |
+| Task  | Stage 2 (30K updates) | Stage 3 (4M frames) | Total   | Total (paper) | 
+|------------------|-----------------------|---------------------|---------|------------|
+| Door/Pen/Hammer  | ~0.5 hrs              | ~13 hrs             | ~14 hrs | ~16 hrs         |
+| Relocate         | ~0.5 hrs              | ~16 hrs             | ~17 hrs |   ~24 hrs       |
 
 Note that VRL3's performance kind of converged already at 1M data for Door, Hammer and Relocate. So depending on what you want to achieve in your work, you may or may not need to run a full 4M frames. In the paper we run to 4M to be consistent with prior work and show VRL3 can outperform previous SOTA in both short-term and long-term performance. 
 
