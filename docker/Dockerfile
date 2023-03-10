@@ -59,7 +59,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive \
 
 # --------- now we have cudagl + python38 ---------
 RUN pip install  --no-cache-dir torch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu116
-# pip install torch==1.8.0+cu111 torchvision==0.9.0+cu111 torchaudio==0.8.0 -f https://download.pytorch.org/whl/torch_stable.html
 
 RUN pip install --no-cache-dir scikit-learn pandas imageio
 
@@ -105,31 +104,6 @@ RUN apt-get update && apt-get install -y libglew-dev \
 # if we don't have this path `/usr/lib/nvidia`, the old mujoco can render with cpu only and not even give an error message
 # makes everything very slow and drive people insane
 RUN mkdir /usr/lib/nvidia
-#RUN cd /workspace/ \
-#    && git clone --recursive https://github.com/facebookresearch/RRL.git \
-#    && cd RRL
-#
-#
-#RUN cd /workspace/ \
-#    && git clone https://github.com/watchernyu/mj_envs.git \
-#    && pip install -e mj_envs/.
-#RUN git clone https://github.com/watchernyu/mjrl.git \
-#    && pip install -e mjrl/.
-#RUN cd /workspace/mj_envs/dependencies \
-#    rm Adroit* -rf \
-#    && git clone https://github.com/vikashplus/Adroit.git \
-#    && cd Adroit \
-#    && git checkout mj_envs \
-#    && git checkout 0fe8a44
-
-
-# RL algorithm: install REDQ. If you don't want to use REDQ, simply remove these lines
-#RUN cd /workspace/ \
-#    && git clone https://github.com/watchernyu/REDQ.git \
-#    && cd REDQ \
-#    && git checkout ac840198f143d10bb22425ed2105a49d01b383fa \
-#    && pip install -e .
-
 
 CMD [ "/bin/bash" ]
 
@@ -138,9 +112,3 @@ CMD [ "/bin/bash" ]
 
 # # example docker command to run interactive container, enable gpu, and remove it when shutdown:
 # docker run -it --rm --gpus all name:tag
-
-
-
-
-# docker run  -it --rm  --mount type=bind,source=$(pwd)/REDQ,target=/workspace/REDQ  cwatcherw/gym-mujocov2:1.0
-
