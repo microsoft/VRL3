@@ -117,7 +117,7 @@ class RLEncoder(nn.Module):
 
     def transform_obs_tensor_batch(self, obs):
         # transform obs batch before put into the pretrained resnet
-        new_obs = self.normalize_op(obs.float())
+        new_obs = self.normalize_op(obs.float()/255)
         return new_obs
 
     def _forward_impl(self, x):

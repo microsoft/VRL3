@@ -1,11 +1,11 @@
 # VRL3 codebase
-Official code by VRL3 authors. This codebase is currently undergoing clean up and will be updated. 
+Official code for the paper VRL3: A Data-Driven Framework for Visual Deep Reinforcement Learning. 
 
-**Please do not** post this code online for now!!! The public official repo is still being processed. 
+Code has just been released and the entire codebase is re-written to make it cleaner and improve readability, so it is possible you might run into an problem, in that case please do not hesitate to post an issue.
 
-I rewrote the entire codebase to make it cleaner and improve readability, so it's possible sth might break, if you run into issues or cannot reproduce the paper results, please don't hesitate to send me an email! (Also, the paper has too many ablations, the code for most of them are now deleted from the codebase so it's not too long and complicated, but if you want to know any details feel free to ask me.)
+We are also doing some further clean-up of the code now. This repo will be updated. 
 
-Repo structure and important files: 
+## Repo structure and important files: 
 ```
 VRL3 # this repo
 │   README.md # read this file first!
@@ -24,7 +24,8 @@ vrl3data # download this folder from the google drive link
 ```
 
 ## Download adroit demos and pretrained models
-
+Use the following link to download them: 
+https://drive.google.com/drive/folders/14rH_QyigJLDWsacQsrSNV7b0PjXOGWwD?usp=sharing
 
 ## Set up environment
 The recommended way is to just use the dockerfile I provided and follow the tutorial here. You can also look at the dockerfile to know the exact dependencies or modify it to build a new dockerfile. 
@@ -126,18 +127,20 @@ Essentially all experiment logs are in the logs folder form the drive link. And 
 
 Still working on it now... Should allow other people to easily reproduce all paper figures with 1-click.
 
-### below: STILL WORKING ON IT NOW...
-# Project
+## Acknowledgement
+VRL3 has been mainly built on top of the DrQv2 codebase (https://github.com/facebookresearch/drqv2). 
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
-
-As the maintainer of this project, please make a few updates:
-
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+## Citation
+If you use VRL3 in your research, please consider citing the paper as:
+```
+@inproceedings{wang2022vrl3,
+  title={VRL3: A Data-Driven Framework for Visual Deep Reinforcement Learning},
+  author={Wang, Che and Luo, Xufang and Ross, Keith and Li, Dongsheng},
+  booktitle={Conference on Neural Information Processing Systems},
+  year={2022},
+  url={https://openreview.net/forum?id=NjKAm5wMbo2}
+}
+```
 
 ## Contributing
 
