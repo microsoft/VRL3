@@ -141,7 +141,9 @@ This table compares the computation time estimates for the open source code with
 Note that VRL3's performance kind of converged already at 1M data for Door, Hammer and Relocate. So depending on what you want to achieve in your work, you may or may not need to run a full 4M frames. In the paper we run to 4M to be consistent with prior work and show VRL3 can outperform previous SOTA in both short-term and long-term performance. 
 
 ## Known issues:
-Some researchers encountered a problem where mujoco might crush at an arbitrary point during training. I have not seen this issue before but I was told reinit `self.train_env` between stage 2 and stage 3 can fix it. 
+- Some might encounter a problem where mujoco can crush at an arbitrary point during training. I have not seen this issue before but I was told reinit `self.train_env` between stage 2 and stage 3 can fix it. 
+- If you are not using the provided docker image and you run into the problem of slow rendering, it is possible that mujoco did not find your gpu and made a `CPUExtender` instead of a `GPUExtender`. You can follow the steps in the provided dockerfile, or force it to use the `GPUExtender` (see code in `mujoco-py/mujoco_py/builder.py`) Thanks to ZheCheng Yuan for identifying above 2 issues. 
+- Newer versions of mujoco are easier to work with. We use an older version only because Adroit relies on it. (So you can try a newer mujoco if you want to test on other environments). 
 
 ## Acknowledgement
 VRL3 has been mainly built on top of the DrQv2 codebase (https://github.com/facebookresearch/drqv2). 
