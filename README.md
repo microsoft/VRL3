@@ -4,9 +4,7 @@
 
 Official code for the paper VRL3: A Data-Driven Framework for Visual Deep Reinforcement Learning. Summary site: https://sites.google.com/nyu.edu/vrl3.
 
-<p align="center">
-  <img src="https://lh4.googleusercontent.com/_DFhrCyYDE0rLkJb9HxyHrT6LAwfOAmjSiz5dkvw9O-zS7j8q1Mebo4LImLWeRyQeUR_TbRFP5u5C_zZNkp8VYCvb__1MPAw3GB9lAAYoFSEQdL4sF2oyvIvL-eCG9JuKw=w1280" width="100%"/>
-</p>
+![CheWang](VRL3.png)
 
 Code has just been released and the entire codebase is re-written to make it cleaner and improve readability, if you run into any problem, please do not hesitate to open an issue. 
 
