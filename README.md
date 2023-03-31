@@ -5,6 +5,10 @@ Code has just been released and the entire codebase is re-written to make it cle
 
 We are also doing some further clean-up of the code now. This repo will be updated. 
 
+### updates:
+<sup>03/30/2023: added example plot function and a quick tutorial.</sup>
+
+
 ## Repo structure and important files: 
 ```
 VRL3 # this repo
@@ -18,9 +22,13 @@ VRL3 # this repo
     │   stage1_models.py # the encoder classes pretrained in stage 1
     └───cfgs_adroit # configuration files with all hyperparameters
 
-vrl3data # download this folder from the google drive link
+# download these folders from the google drive link
+vrl3data 
 └───demonstrations # adroit demos 
 └───trained_models # pretrained stage 1 models
+vrl3examplelogs 
+└───rrl  # rrl training logs
+└───vrl3 # vrl3 with default hyperparams logs
 ```
 
 ## Download adroit demos and pretrained models
@@ -106,6 +114,17 @@ We mount the `mujoco_py` package folder because singularity files by default are
 
 After the singularity container started running, now refer to the "Run experiments" section.
 
+## Plotting example
+If you like to use the plotting functions we used, you will need `matplotlib`, `seaborn` and some other basic packages to use the plotting programs. You can also use your own plotting functions. 
+
+An example is given in `plot_utils/vrl3_plot_example.py`. To use it: 
+1. make sure you downloaded the `vrl3examplelogs` folder from the drive link and unzipped it. 
+2. in `plot_utils/vrl3_plot_example.py`, change the `base_dir` path to where the `vrl3examplelogs` folder is on your computer. 
+3. similarlly, change `base_save_dir` path to where you want the figures to be generated. 
+4. run `plot_utils/vrl3_plot_example.py`, this will generate a few figures comparing success rate between RRL and VRL3 to the specified path. 
+
+(All ablation experiment logs generated during the VRL3 research are in the folder `vrl3logs` from the drive link. `plot_utils/vrl3_plot_runner.py` was used to generate figures in the paper. Still need further clean up.)
+
 ## Some hyperparameter details
 - BC loss: in the config files, I now by default disable all BC loss since our ablations show they are not really helping. 
 - under `src/cfgs_adroit/task/relocate.yaml` you will see that relocate has `encoder_lr_scale: 0.01`, as shown in the paper, relocate requires a smaller encoder learning rate. You can set specific default parameters for each task in their separate config files. 
@@ -122,10 +141,8 @@ This table compares the computation time estimates for the open source code with
 
 Note that VRL3's performance kind of converged already at 1M data for Door, Hammer and Relocate. So depending on what you want to achieve in your work, you may or may not need to run a full 4M frames. In the paper we run to 4M to be consistent with prior work and show VRL3 can outperform previous SOTA in both short-term and long-term performance. 
 
-## reproduce plots
-Essentially all experiment logs are in the logs folder form the drive link. And then I basically run `plot_utils/vrl3_plot_runner.py` to generate all the figures. (it uses plotting helper functions in `vrl3_plot_helper.py`) But there were too many figures, and I still need some time to clean up the plotting code so it might be difficult to use for now. Sorry for that.
-
-Still working on it now... Should allow other people to easily reproduce all paper figures with 1-click.
+## Known issues:
+Some researchers encountered a problem where mujoco might crush at an arbitrary point during training. I have not seen this issue before but I was told reinit `self.train_env` between stage 2 and stage 3 can fix it. 
 
 ## Acknowledgement
 VRL3 has been mainly built on top of the DrQv2 codebase (https://github.com/facebookresearch/drqv2). 

@@ -6143,7 +6143,7 @@ def plot_paper_hyper_sens(): # try plot ablations in the fancy way
 
     envs = ['door', 'hammer', 'pen', 'relocate', ]
     #
-    plot_one_figure_with_labels = True
+    plot_one_figure_with_labels = False
     if plot_one_figure_with_labels:
         key = 'abl_hs_s1_pretrain'
         value = [
@@ -6160,7 +6160,6 @@ def plot_paper_hyper_sens(): # try plot ablations in the fancy way
         variants, categories = to_abl[key]
         plot_hyper_sensitivity(paths, variants, categories, save_folder=save_folder, save_name=save_name,
                                seed_max=2, envs=envs)  # for now just use 3 seeds for consistency
-        quit()
     for key, value in to_abl.items():
         save_name = key
         variants, categories = to_abl[key]
@@ -7605,7 +7604,6 @@ put fully ready data plotting functions below (paper-ready plots)
 # plot_varl3_main_relocate()
 # plot_main4()
 
-
 # paper: run this to generate hyper sensitivity plots #TODO might want to set this part to use 3 seeds...
 # plot_paper_hyper_sens()
 
@@ -7620,11 +7618,14 @@ put fully ready data plotting functions below (paper-ready plots)
 # plot_may_pen_hammer_test()
 
 ###############################################################################
-############################################################################### 05092022 working on this now
+###############################################################################
+def plot_dmc_paper():
+    plot_dmc_main_per_task()
+    plot_dmc_aggregate_all24()
+
 def plot_neurips():
     ## figure 2, main result on Adroit and DMC
     plot_paper_main_more_aggregate()
-    plot_dmc_aggregate_all24()
 
     ## figure 3, BC/disable, S2-S3 sucess and Q value, encoder lr
     # plot_paper_fs_s2_bc()
@@ -7641,7 +7642,6 @@ def plot_neurips():
     plot_paper_fs_s123_stage_update_aggregate()
     plot_paper_fs_s123_encoder_update_aggregate()
 
-    ## figure 5 hyper sensitivity
 def plot_neurips_appendix():
     plot_paper_main_more_per_task()
     plot_paper_fs_s2_bc_per_task()
@@ -7654,161 +7654,58 @@ def plot_neurips_appendix():
     # plot_paper_fs_framestack_per_task()
     plot_paper_fs_pretanh_penalty_per_task()
 
-# plot_paper_fs_s123_encoder_update_aggregate()
-# plot_paper_fs_s23_transition_q_safe_factor_aggregate()
-# quit()
-# plot_paper_fs_s23_transition_q_safe_factor_aggregate()
-# plot_dmc_aggregate_all21()
+def plot_rebuttal():
+    plot_nrebuttal_CCE_ablation_per_task() # newest cce results, with bugs resolved
+    plot_nrebuttal_bc_new_abl_per_task()
+    plot_nrebuttal_bc_new_abl_nos1_per_task()
 
-# plot_dmc_aggregate_all24()
-# plot_dmc_main_per_task()
-# plot_dmc_aggregate_all24(envs=['walker_run'], xmax=int(3e6)+50000, drqv2_max_frame=int(3e6), max_frames=int(3e6), no_legend=True)
+    plot_nrebuttal_highcap_10(envs=['door',])
+    plot_nrebuttal_highcap_10(envs=['relocate',])
+    plot_nrebuttal_highcap_18(envs=['door',])
+    plot_nrebuttal_highcap_18(envs=['relocate',])
 
-# plot_paper_fs_s2_bc_aggregate()
-# plot_paper_fs_s2_bc_per_task()
-# plot_paper_fs_s23_transition_q_safe_factor_aggregate()
-# plot_paper_fs_s23_transition_q_safe_factor_per_task()
+    plot_paper_main_relocate()
+    plot_paper_main_more_per_task()
+    plot_paper_hyper_sens()
 
+    plot_post_fs_pretanh()
+    plot_paper_fs_bn()
+    plot_post_fs_s3_freeze_extra()
+    plot_post_fs_long_stage2()
+    plot_post_s1_model()
+    plot_post_framestack()
+    plot_post_mom_enc_elr()
+    plot_post_mom_enc_safeq()
+    plot_post_model_elr()
+    plot_post_s2_qmin()
+    plot_post_samechannel()
+    plot_post_model_elr_p()
+    plot_post_model_elr_complete_results()
 
-# plot_paper_fs_s23_enc_lr_scale_aggregate()
-# plot_paper_fs_s23_enc_lr_scale_per_task()
+def plot_main_vrl3_plots():
+    # # figure 2a
+    plot_paper_main_more_aggregate()
+    # # figure 2b
+    plot_paper_main_relocate()
+    # # figure 7
+    plot_paper_main_more_per_task()
+    # # figure 6
+    plot_paper_hyper_sens()
 
-# plot_paper_fs_s123_stage_update_aggregate()
-# plot_paper_fs_s123_stage_update_per_task()
+    # # figure 3, BC/disable, S2-S3 sucess and Q value, encoder lr
+    plot_paper_fs_s2_bc()
+    plot_paper_fs_s2_bc_aggregate()
 
+    plot_paper_fs_s23_transition()
+    plot_paper_fs_s23_transition_q_safe_factor_aggregate()
 
-# plot_paper_fs_s123_encoder_update_aggregate()
-# plot_paper_fs_s123_encoder_update_per_task()
+    plot_paper_fs_s23_enc_lr_scale()
+    plot_paper_fs_s23_enc_lr_scale_aggregate()
 
-# plot_paper_fs_bn_per_task()
-# plot_paper_fs_bn_aggregate()
-# plot_paper_fs_framestack_aggregate()
-# plot_paper_fs_framestack_per_task()
+    # # figure 4
+    plot_paper_fs_s123_encoder_update()
+    plot_paper_fs_s123_stage_update_aggregate()
+    plot_paper_fs_s123_encoder_update_aggregate()
 
-# plot_paper_fs_s2_extrabc_aggregate()
-# plot_paper_fs_pretanh_penalty_aggregate()
-# plot_paper_fs_pretanh_penalty_per_task()
-# plot_neurips_appendix()
-# plot_paper_fs_pretanh_penalty_per_task()
-# plot_extra_stage1_model()
-# plot_extra_stage1_model_per_task()
-
-# plot_paper_fs_s123_encoder_update_aggregate_extra()
-# plot_paper_fs_s123_encoder_per_task_extra()
-
-# plot_paper_fs_s23_enc_lr_scale_aggregate()
-
-# plot_extra_stage1_model_per_task()
-
-# door_hammer_env = ['door', 'hammer']
-
-# plot_nrebuttal_CCE_ablation(envs=door_hammer_env)
-
-# plot_nrebuttal_CCE_ablation_per_task()
-# plot_nrebuttal_long_term_per_task()
-
-# for env in ['door', 'hammer']:
-#     plot_nrebuttal_CCE_ablation2(envs=[env,])
-
-# plot_nrebuttal_long_term()
-
-# plot_nrebuttal_CCE_ablation_per_task()
-
-# plot_nrebuttal_CCE_ablation(['door', 'hammer', 'pen'])
-
-# plot_nrebuttal_CCE_ablation_per_task()
-# plot_nrebuttal_CCE_ablation()
-
-# plot_paper_fs_framestack_per_task()
-
-# TODO need to replot CCE ablation for other 3 envs...
-# plot_nrebuttal_CCE_ablation_fs1(envs=['relocate',])
-
-plot_nrebuttal_s1_ssl(envs=['relocate',])
-
-
-# =======================================================================================
-# TODO TODO working here now
-# plot_nrebuttal_CCE_ablation_per_task() # newest cce results, with bugs resolved
-# plot_nrebuttal_bc_new_abl_per_task()
-# plot_nrebuttal_bc_new_abl_nos1_per_task()
-
-plot_nrebuttal_highcap_10(envs=['door',])
-plot_nrebuttal_highcap_10(envs=['relocate',])
-plot_nrebuttal_highcap_18(envs=['door',])
-plot_nrebuttal_highcap_18(envs=['relocate',])
-
-quit()
-
-
-plot_paper_main_more_per_task()
-quit()
-
-plot_paper_hyper_sens()
-quit()
-
-plot_paper_main_relocate()
-quit()
-plot_neurips()
-quit()
-plot_paper_hyper_sens()
-
-quit()
-
-quit()
-
-# plot_paper_fs_s3_buffer()
-
-# def plot_in_paper_order():
-#     plot_paper_fs_s123_encoder_update()
-#     plot_paper_fs_s2_bc()
-#     plot_paper_fs_s23_q_safe_factor()
-#
-#     plot_paper_fs_s23_transition()
-#
-#     plot_paper_fs_s23_enc_lr_scale()
-#     plot_paper_fs_bn()
-#     plot_paper_main_more()
-    # plot_paper_compare_out_compress()
-
-
-
-# plot_in_paper_order()
-# plot_paper_fs_s2_bc()
-# plot_paper_main_more()
-
-#TODO add margin and make lines thicker and redo the plot...
-
-def plot_post_submission():
-    # plot_post_fs_pretanh()
-    # plot_paper_fs_bn()
-    # plot_post_fs_s3_freeze_extra()
-    # plot_post_fs_long_stage2()
-    # plot_post_s1_model()
-    # plot_post_framestack()
-    # plot_post_mom_enc_elr()
-    # plot_post_mom_enc_safeq()
-    # plot_post_model_elr()
-    # plot_post_s2_qmin()
-    # plot_post_samechannel()
-    # plot_post_model_elr_p()
-    # plot_post_model_elr_complete_results()
-    pass
-# plot_post_submission()
-
-# plot_post_dmc_hard()
-# plot_post_dmc_easy()
-# plot_post_dmc_hard()
-# plot_post_dmc_medium_aggregate()
-# check_dmc_vrl3_medium()
-# plot_post_dmc_medium_hyper2()
-# check_dmc_vrl3_hard()
-# plot_post_dmc_medium()
-# plot_post_dmc_easy()
-# plot_post_dmc_hard()
-# plot_post_dmc_rebuttal_aggregate()
-
-
-
-
+plot_main_vrl3_plots()
 

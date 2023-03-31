@@ -593,7 +593,8 @@ def plot_hyper_sensitivity(base_path, variants_base, categories, plot_y_value='s
     if have_legend:
         ax = sns.stripplot(data=df, x="cat", y="score", size=30, hue='env', marker='D',
                            edgecolor="gray", alpha=.25, jitter=False, palette=palette)
-        ax = sns.pointplot(data=df, x="cat", y="score", ci="sd", hue='env', capsize=.2, linewidth = 5, palette=palette)
+        # ax = sns.pointplot(data=df, x="cat", y="score", ci="sd", hue='env', capsize=.2, linewidth = 5, palette=palette)
+        ax = sns.pointplot(data=df, x="cat", y="score", ci="sd", hue='env', capsize=.2, palette=palette)
         ax.get_legend().remove()
 
         from matplotlib.patches import Patch
