@@ -1,7 +1,5 @@
 ## Visual Deep Reinforcement Learning in 3 Stages (VRL3)
 
----
-
 Official code for the paper VRL3: A Data-Driven Framework for Visual Deep Reinforcement Learning. Summary site: https://sites.google.com/nyu.edu/vrl3.
 
 ![CheWang](VRL3.png)
@@ -13,8 +11,6 @@ We are also doing some further clean-up of the code now. This repo will be updat
 <a name="table-of-contents"/> 
 
 ### Table of Contents  
-
----
 
 - [Repo structure](#repo-structure)
 - [Environment setup](#environment-setup) 
@@ -32,16 +28,12 @@ We are also doing some further clean-up of the code now. This repo will be updat
 
 ### Updates:
 
----
-
 <sup>03/30/2023: added example plot function and a quick tutorial.</sup>
 
 
 <a name="repo-structure"/> 
 
 ## Repo structure and important files: 
-
----
 
 ```
 VRL3 # this repo
@@ -71,16 +63,11 @@ https://drive.google.com/drive/folders/14rH_QyigJLDWsacQsrSNV7b0PjXOGWwD?usp=sha
 
 ## Environment setup
 
----
-
 The recommended way is to just use the dockerfile I provided and follow the tutorial here. You can also look at the dockerfile to know the exact dependencies or modify it to build a new dockerfile. 
 
 <a name="docker"/> 
 
 ### Setup with docker
-
----
-
 
 If you have a local machine with gpu, or your cluster allows docker (you have sudo), then you can just pull my docker image and run code there. (Newest version is 1.5, where the mujoco slow rendering with gpu issue is fixed). 
 ```
@@ -97,8 +84,6 @@ Now you should be inside the docker container. Refer to the "Run experiments" se
 <a name="run-exp"/>
 
 ### Run experiments
-
----
 
 Once you get into the container (either docker or singularity), first run the following commands so the paths are correct. Very important especially on singularity since it uses automount which can mess up the paths. (newest version code now uses `os.environ` to do these so you can also skip this step.) 
 ```
@@ -141,8 +126,6 @@ python train_adroit.py task=door stage2_n_update=5000 agent.encoder_lr_scale=0.1
 
 ### Setup with singularity 
 
----
-
 If your cluster does not allow sudo (for example, NYU's slurm HPC), then you can use singularity, it is similar to docker. But you might need to modify some of the commands depends on how your cluster is being managed. Here is an example setup on the NYU Greene HPC.
 
 Set up singularity container (this will make a folder called `sing` in your scratch directory, and then build a singularity sandbox container called `vrl3sing`, using the `cwatcherw/vrl3:1.5` docker container which I put on my docker hub):
@@ -169,8 +152,6 @@ After the singularity container started running, now refer to the "Run experimen
 
 ## Plotting example
 
----
-
 If you like to use the plotting functions we used, you will need `matplotlib`, `seaborn` and some other basic packages to use the plotting programs. You can also use your own plotting functions. 
 
 An example is given in `plot_utils/vrl3_plot_example.py`. To use it: 
@@ -185,8 +166,6 @@ An example is given in `plot_utils/vrl3_plot_example.py`. To use it:
 
 ## Technical details
 
----
-
 - BC loss: in the config files, I now by default disable all BC loss since our ablations show they are not really helping. 
 - under `src/cfgs_adroit/task/relocate.yaml` you will see that relocate has `encoder_lr_scale: 0.01`, as shown in the paper, relocate requires a smaller encoder learning rate. You can set specific default parameters for each task in their separate config files. 
 - in the paper for most experiments, I used `frame_stack=3`, however later I found we can reduce it to 1 and still get the same performance. It might be beneficial to set it to 1 so it runs faster and takes less memory. If you set this to 1, then convolutional channel expansion will only be applied for the relocate env, where the input is a stack of 3 camera images. 
@@ -196,8 +175,6 @@ An example is given in `plot_utils/vrl3_plot_example.py`. To use it:
 <a name="computation"/>
 
 ### Computation time
-
----
 
 This table compares the computation time estimates for the open source code with default hyperparameters (tested on NYU Greene with RTX 8000 and 4 cpus). When you use the code on your machine, it might be slightly faster or slower, but should not be too different. These results seem to be slightly faster than what we reported in the paper (which tested on Azure P100 GPU machines). Improved computation speed is mainly due to we now set default `frame_stack` for Adroit.
 
@@ -212,8 +189,6 @@ Note that VRL3's performance kind of converged already at 1M data for Door, Hamm
 
 ### Known issues:
 
----
-
 - Some might encounter a problem where mujoco can crush at an arbitrary point during training. I have not seen this issue before but I was told reinit `self.train_env` between stage 2 and stage 3 can fix it. 
 - If you are not using the provided docker image and you run into the problem of slow rendering, it is possible that mujoco did not find your gpu and made a `CPUExtender` instead of a `GPUExtender`. You can follow the steps in the provided dockerfile, or force it to use the `GPUExtender` (see code in `mujoco-py/mujoco_py/builder.py`) Thanks to ZheCheng Yuan for identifying above 2 issues. 
 - Newer versions of mujoco are easier to work with. We use an older version only because Adroit relies on it. (So you can try a newer mujoco if you want to test on other environments). 
@@ -222,15 +197,11 @@ Note that VRL3's performance kind of converged already at 1M data for Door, Hamm
 
 ## Acknowledgement
 
----
-
 VRL3 code has been mainly built on top of the DrQv2 codebase (https://github.com/facebookresearch/drqv2). Some utility functions and dockerfile are modified from the REDQ codebase (https://github.com/watchernyu/REDQ). The Adroit demo loading code is modified from the RRL codebase (https://github.com/facebookresearch/RRL). 
 
 <a name="citation"/>
 
 ## Citation
-
----
 
 If you use VRL3 in your research, please consider citing the paper as:
 ```
@@ -246,8 +217,6 @@ If you use VRL3 in your research, please consider citing the paper as:
 <a name="contributing"/>
 
 ## Contributing
-
----
 
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
@@ -265,8 +234,6 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 <a name="trademarks"/>
 
 ## Trademarks
-
----
 
 
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
