@@ -1,5 +1,5 @@
 # VRL3 codebase
-Official code for the paper VRL3: A Data-Driven Framework for Visual Deep Reinforcement Learning. 
+Official code for the paper VRL3: A Data-Driven Framework for Visual Deep Reinforcement Learning. Summary site: https://sites.google.com/nyu.edu/vrl3. 
 
 Code has just been released and the entire codebase is re-written to make it cleaner and improve readability, so it is possible you might run into an problem, in that case please do not hesitate to post an issue.
 
@@ -31,8 +31,7 @@ vrl3examplelogs
 └───vrl3 # vrl3 with default hyperparams logs
 ```
 
-## Download adroit demos and pretrained models
-Use the following link to download them: 
+To get started, download this repo and download adroit demos, pretrained models, and example logs with the following link: 
 https://drive.google.com/drive/folders/14rH_QyigJLDWsacQsrSNV7b0PjXOGWwD?usp=sharing
 
 ## Set up environment
@@ -52,7 +51,7 @@ docker run -it --rm --gpus all -v "$(pwd)"/VRL3/src:/code -v "$(pwd)"/vrl3data:/
 Now you should be inside the docker container. Refer to the "Run experiments" section now. 
 
 ### Run experiments
-Once you get into the container (either docker or singularity), first run the following commands so the paths are correct. Very important especially on singularity since it uses automount which can mess up the paths.  
+Once you get into the container (either docker or singularity), first run the following commands so the paths are correct. Very important especially on singularity since it uses automount which can mess up the paths. (newest version code now uses `os.environ` to do these so you can also skip this step.) 
 ```
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/workspace/.mujoco/mujoco210/bin
 export MUJOCO_PY_MUJOCO_PATH=/workspace/.mujoco/mujoco210/

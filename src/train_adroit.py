@@ -1,11 +1,15 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
+import os, psutil
+# make sure mujoco and nvidia will be found
+os.environ['LD_LIBRARY_PATH'] = os.environ.get('LD_LIBRARY_PATH', '') + \
+                                ':/workspace/.mujoco/mujoco210/bin:/usr/local/nvidia/lib:/usr/lib/nvidia'
+os.environ['MUJOCO_PY_MUJOCO_PATH'] = '/workspace/.mujoco/mujoco210/'
 import numpy as np
 import shutil
 import warnings
 warnings.filterwarnings('ignore', category=DeprecationWarning)
-import os, psutil
 os.environ['MKL_SERVICE_FORCE_INTEL'] = '1'
 import platform
 os.environ['MUJOCO_GL'] = 'egl'
