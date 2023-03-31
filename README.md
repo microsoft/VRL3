@@ -1,13 +1,41 @@
-# VRL3 codebase
-Official code for the paper VRL3: A Data-Driven Framework for Visual Deep Reinforcement Learning. Summary site: https://sites.google.com/nyu.edu/vrl3. 
+## Visual Deep Reinforcement Learning in 3 Stages (VRL3)
 
-Code has just been released and the entire codebase is re-written to make it cleaner and improve readability, so it is possible you might run into an problem, in that case please do not hesitate to post an issue.
+---
+
+Official code for the paper VRL3: A Data-Driven Framework for Visual Deep Reinforcement Learning. Summary site: https://sites.google.com/nyu.edu/vrl3.
+
+<p align="center">
+  <img src="https://lh4.googleusercontent.com/_DFhrCyYDE0rLkJb9HxyHrT6LAwfOAmjSiz5dkvw9O-zS7j8q1Mebo4LImLWeRyQeUR_TbRFP5u5C_zZNkp8VYCvb__1MPAw3GB9lAAYoFSEQdL4sF2oyvIvL-eCG9JuKw=w1280" width="100%"/>
+</p>
+
+Code has just been released and the entire codebase is re-written to make it cleaner and improve readability, if you run into any problem, please do not hesitate to open an issue. 
 
 We are also doing some further clean-up of the code now. This repo will be updated. 
 
-### updates:
+<a name="table-of-contents"/> 
+
+### Table of Contents  
+- [Repo structure](#repo-structure)
+- [Environment setup](#environment-setup) 
+  - [Docker setup](#docker)
+  - [Run experiments](#run-exp)
+  - [Singularity setup](#singularity)
+- [Plotting example](#plotting)
+- [Technical details](#hyper)
+  - [Computation time](#computation)
+  - [Known issues](#known-issues)
+- [Acknowledgement](#acknowledgement)
+- [Citation](#citation)
+- [Contributing](#contributing)
+
+---
+
+### Updates:
 <sup>03/30/2023: added example plot function and a quick tutorial.</sup>
 
+---
+
+<a name="repo-structure"/> 
 
 ## Repo structure and important files: 
 ```
@@ -34,8 +62,12 @@ vrl3examplelogs
 To get started, download this repo and download adroit demos, pretrained models, and example logs with the following link: 
 https://drive.google.com/drive/folders/14rH_QyigJLDWsacQsrSNV7b0PjXOGWwD?usp=sharing
 
-## Set up environment
+<a name="environment-setup"/> 
+
+## Environment setup
 The recommended way is to just use the dockerfile I provided and follow the tutorial here. You can also look at the dockerfile to know the exact dependencies or modify it to build a new dockerfile. 
+
+<a name="docker"/> 
 
 ### Setup with docker
 If you have a local machine with gpu, or your cluster allows docker (you have sudo), then you can just pull my docker image and run code there. (Newest version is 1.5, where the mujoco slow rendering with gpu issue is fixed). 
@@ -49,6 +81,8 @@ Then, mount `VRL3/src` to `/code`, and mount `vrl3data` to `/vrl3data` (you can 
 docker run -it --rm --gpus all -v "$(pwd)"/VRL3/src:/code -v "$(pwd)"/vrl3data:/vrl3data  docker://cwatcherw/vrl3:1.5
 ```
 Now you should be inside the docker container. Refer to the "Run experiments" section now. 
+
+<a name="run-exp"/>
 
 ### Run experiments
 Once you get into the container (either docker or singularity), first run the following commands so the paths are correct. Very important especially on singularity since it uses automount which can mess up the paths. (newest version code now uses `os.environ` to do these so you can also skip this step.) 
@@ -88,9 +122,9 @@ You can also run with different hyperparameters, see the `config.yaml` for a ful
 python train_adroit.py task=door stage2_n_update=5000 agent.encoder_lr_scale=0.1
 ```
 
+<a name="singularity"/>
 
-
-### Setup singularity 
+### Setup with singularity 
 If your cluster does not allow sudo (for example, NYU's slurm HPC), then you can use singularity, it is similar to docker. But you might need to modify some of the commands depends on how your cluster is being managed. Here is an example setup on the NYU Greene HPC.
 
 Set up singularity container (this will make a folder called `sing` in your scratch directory, and then build a singularity sandbox container called `vrl3sing`, using the `cwatcherw/vrl3:1.5` docker container which I put on my docker hub):
@@ -109,9 +143,11 @@ Here, by default VRL3 uses 4 workers for dataloader, so we request 4 cpus. Once 
 cd /scratch/$USER/sing
 singularity exec --nv -B /scratch/$USER/sing/VRL3/src:/code -B /scratch/$USER/sing/vrl3sing/opt/conda/lib/python3.8/site-packages/mujoco_py/:/opt/conda/lib/python3.8/site-packages/mujoco_py/ -B /scratch/$USER/sing/vrl3data:/vrl3data /scratch/$USER/sing/vrl3sing bash
 ```
-We mount the `mujoco_py` package folder because singularity files by default are read-only, and the older version of mujoco_py wants to modify files, which can be problematic. (And Adroit env relies on older version of mujoco so we have to deal with it...)
+We mount the `mujoco_py` package folder because singularity files by default are read-only, and the older version of mujoco_py wants to modify files, which can be problematic. (Unfortunately, Adroit env relies on the older version of mujoco)
 
 After the singularity container started running, now refer to the "Run experiments" section.
+
+<a name="plotting"/>
 
 ## Plotting example
 If you like to use the plotting functions we used, you will need `matplotlib`, `seaborn` and some other basic packages to use the plotting programs. You can also use your own plotting functions. 
@@ -122,15 +158,19 @@ An example is given in `plot_utils/vrl3_plot_example.py`. To use it:
 3. similarlly, change `base_save_dir` path to where you want the figures to be generated. 
 4. run `plot_utils/vrl3_plot_example.py`, this will generate a few figures comparing success rate between RRL and VRL3 to the specified path. 
 
-(All ablation experiment logs generated during the VRL3 research are in the folder `vrl3logs` from the drive link. `plot_utils/vrl3_plot_runner.py` was used to generate figures in the paper. Still need further clean up.)
+(All ablation experiment logs generated during the VRL3 research are in the folder `vrl3logs` from the drive link. `plot_utils/vrl3_plot_runner.py` was used to generate figures in the paper. Currently still need further clean up.)
 
-## Some hyperparameter details
+<a name="hyper"/>
+
+## Technical details
 - BC loss: in the config files, I now by default disable all BC loss since our ablations show they are not really helping. 
 - under `src/cfgs_adroit/task/relocate.yaml` you will see that relocate has `encoder_lr_scale: 0.01`, as shown in the paper, relocate requires a smaller encoder learning rate. You can set specific default parameters for each task in their separate config files. 
 - in the paper for most experiments, I used `frame_stack=3`, however later I found we can reduce it to 1 and still get the same performance. It might be beneficial to set it to 1 so it runs faster and takes less memory. If you set this to 1, then convolutional channel expansion will only be applied for the relocate env, where the input is a stack of 3 camera images. 
 - all values in table 2 in appendix A.2 of the paper are set to be the default values in the config files. 
 
-## Computation time
+<a name="computation"/>
+
+### Computation time
 This table compares the computation time estimates for the open source code with default hyperparameters (tested on NYU Greene with RTX 8000 and 4 cpus). When you use the code on your machine, it might be slightly faster or slower, but should not be too different. These results seem to be slightly faster than what we reported in the paper (which tested on Azure P100 GPU machines). Improved computation speed is mainly due to we now set default `frame_stack` for Adroit.
 
 | Task  | Stage 2 (30K updates) | Stage 3 (4M frames) | Total   | Total (paper) | 
@@ -140,13 +180,19 @@ This table compares the computation time estimates for the open source code with
 
 Note that VRL3's performance kind of converged already at 1M data for Door, Hammer and Relocate. So depending on what you want to achieve in your work, you may or may not need to run a full 4M frames. In the paper we run to 4M to be consistent with prior work and show VRL3 can outperform previous SOTA in both short-term and long-term performance. 
 
-## Known issues:
+<a name="known-issues"/>
+
+### Known issues:
 - Some might encounter a problem where mujoco can crush at an arbitrary point during training. I have not seen this issue before but I was told reinit `self.train_env` between stage 2 and stage 3 can fix it. 
 - If you are not using the provided docker image and you run into the problem of slow rendering, it is possible that mujoco did not find your gpu and made a `CPUExtender` instead of a `GPUExtender`. You can follow the steps in the provided dockerfile, or force it to use the `GPUExtender` (see code in `mujoco-py/mujoco_py/builder.py`) Thanks to ZheCheng Yuan for identifying above 2 issues. 
 - Newer versions of mujoco are easier to work with. We use an older version only because Adroit relies on it. (So you can try a newer mujoco if you want to test on other environments). 
 
+<a name="acknowledgement"/>
+
 ## Acknowledgement
-VRL3 has been mainly built on top of the DrQv2 codebase (https://github.com/facebookresearch/drqv2). 
+VRL3 code has been mainly built on top of the DrQv2 codebase (https://github.com/facebookresearch/drqv2). Some utility functions and dockerfile are modified from the REDQ codebase (https://github.com/watchernyu/REDQ). The Adroit demo loading code is modified from the RRL codebase (https://github.com/facebookresearch/RRL). 
+
+<a name="citation"/>
 
 ## Citation
 If you use VRL3 in your research, please consider citing the paper as:
@@ -159,6 +205,8 @@ If you use VRL3 in your research, please consider citing the paper as:
   url={https://openreview.net/forum?id=NjKAm5wMbo2}
 }
 ```
+
+<a name="contributing"/>
 
 ## Contributing
 
@@ -173,6 +221,8 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+<a name="trademarks"/>
 
 ## Trademarks
 
