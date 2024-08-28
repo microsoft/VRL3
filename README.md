@@ -57,7 +57,7 @@ vrl3examplelogs
 ```
 
 To get started, download this repo and download adroit demos, pretrained models, and example logs with the following link: 
-https://drive.google.com/drive/folders/14rH_QyigJLDWsacQsrSNV7b0PjXOGWwD?usp=sharing
+https://drive.google.com/drive/folders/1j-7BKlYmknVCBfzO3MnLLD62JBngoMkn?usp=sharing
 
 <a name="environment-setup"/> 
 
